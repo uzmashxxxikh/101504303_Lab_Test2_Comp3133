@@ -1,0 +1,141 @@
+<div class="app-wrapper">
+  <!-- Modern Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">HP Explorer</span>
+    </div>
+    
+    <nav class="nav-menu">
+      <a (click)="switchView('characters')" class="nav-item" [class.active]="currentView() === 'characters'">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Characters</span>
+      </a>
+      <a (click)="switchView('houses')" class="nav-item" [class.active]="currentView() === 'houses'">
+        <span class="nav-icon">🏰</span>
+        <span class="nav-label">Houses</span>
+      </a>
+      <a (click)="switchView('spells')" class="nav-item" [class.active]="currentView() === 'spells'">
+        <span class="nav-icon">✨</span>
+        <span class="nav-label">Spells</span>
+      </a>
+      <a (click)="switchView('books')" class="nav-item" [class.active]="currentView() === 'books'">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Books</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Top Bar with Search -->
+    <header class="top-bar">
+      <div class="page-title">
+        @switch (currentView()) {
+          @case ('characters') {
+            <h1>Discover Characters</h1>
+            <p>Explore the magical world of Harry Potter</p>
+          }
+          @case ('houses') {
+            <h1>Hogwarts Houses</h1>
+            <p>Explore the four houses of Hogwarts</p>
+          }
+          @case ('spells') {
+            <h1>Magical Spells</h1>
+            <p>Discover spells from the wizarding world</p>
+          }
+          @case ('books') {
+            <h1>Harry Potter Books</h1>
+            <p>Explore the book series</p>
+          }
+        }
+      </div>
+      
+      @if (currentView() === 'characters') {
+        <app-character-search (searchChanged)="onSearchChanged($event)"></app-character-search>
+      }
+    </header>
+
+    <!-- Content Section -->
+    <section class="content-section">
+      @switch (currentView()) {
+        @case ('characters') {
+          <app-character-list 
+            [characters]="filteredCharacters()" 
+            [status]="status()">
+          </app-character-list>
+        }
+        @case ('houses') {
+          @switch (status()) {
+            @case ('loading') {
+              <div class="status-message">
+                <div class="spinner"></div>
+                <p>Loading houses...</p>
+              </div>
+            }
+            @case ('success') {
+              <div class="houses-grid">
+                @for (house of allHouses(); track house.house) {
+                  <div class="house-card" [attr.data-house]="house.house">
+                    <div class="house-emoji">🏰</div>
+                    <h3>{{ house.house }}</h3>
+                    <p class="house-founder">Founded by {{ house.founder }}</p>
+                    <p class="house-animal">{{ house.animal }}</p>
+                    <div class="house-colors">
+                      <span>Colors: {{ house.houseColours }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          }
+        }
+        @case ('spells') {
+          @switch (status()) {
+            @case ('loading') {
+              <div class="status-message">
+                <div class="spinner"></div>
+                <p>Loading spells...</p>
+              </div>
+            }
+            @case ('success') {
+              <div class="spells-grid">
+                @for (spell of allSpells(); track spell.spell) {
+                  <div class="spell-card">
+                    <div class="spell-icon">✨</div>
+                    <h3>{{ spell.spell }}</h3>
+                    <p class="spell-use">{{ spell.use }}</p>
+                  </div>
+                }
+              </div>
+            }
+          }
+        }
+        @case ('books') {
+          @switch (status()) {
+            @case ('loading') {
+              <div class="status-message">
+                <div class="spinner"></div>
+                <p>Loading books...</p>
+              </div>
+            }
+            @case ('success') {
+              <div class="books-grid">
+                @for (book of allBooks(); track book.number) {
+                  <div class="book-card">
+                    <div class="book-number">{{ book.number }}</div>
+                    <h3>{{ book.title }}</h3>
+                    <p class="book-date">Released: {{ book.releaseDate }}</p>
+                    <p class="book-pages">{{ book.pages }} pages</p>
+                  </div>
+                }
+              </div>
+            }
+          }
+        }
+      }
+    </section>
+  </main>
+</div>
+
+<router-outlet />

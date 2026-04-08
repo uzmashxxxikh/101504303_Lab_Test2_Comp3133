@@ -1,0 +1,88 @@
+@switch (status) {
+  @case ('loading') {
+    <div class="status-message">
+      <div class="spinner"></div>
+      <p>Loading magical characters...</p>
+    </div>
+  }
+  
+  @case ('error') {
+    <div class="status-message error">
+      <p>⚡ Oops! Something went wrong while loading the characters.</p>
+      <p>Please check your connection and try again.</p>
+    </div>
+  }
+  
+  @case ('empty') {
+    <div class="status-message">
+      <p>🔍 No characters found matching your search.</p>
+      <p>Try adjusting your filters!</p>
+    </div>
+  }
+  
+  @case ('success') {
+    <div class="card-grid">
+      @for (character of characters; track character.fullName) {
+        <a 
+          [href]="'https://www.google.com/search?q=' + character.fullName + ' Harry Potter'"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card-link">
+          <div class="card" [style.border-color]="character.hogwartsHouse | houseColor">
+            @if (character.image) {
+              <img [src]="character.image" [alt]="character.fullName" class="character-img" />
+            } @else {
+              <div class="no-image">No Image Available</div>
+            }
+            
+            <div class="card-content">
+              <h3 class="character-name">{{ character.fullName }}</h3>
+              
+              @if (character.nickname) {
+                <p class="nickname">"{{ character.nickname }}"</p>
+              }
+              
+              <div class="info-row">
+                <strong>House:</strong>
+                @if (character.hogwartsHouse) {
+                  <span 
+                    class="house-badge" 
+                    [style.background-color]="character.hogwartsHouse | houseColor">
+                    {{ character.hogwartsHouse }}
+                  </span>
+                } @else {
+                  <span class="unknown">Unknown</span>
+                }
+              </div>
+              
+              @if (character.interpretedBy) {
+                <div class="info-row">
+                  <strong>Actor:</strong>
+                  <span>{{ character.interpretedBy }}</span>
+                </div>
+              }
+              
+              @if (character.birthdate) {
+                <div class="info-row">
+                  <strong>Birthdate:</strong>
+                  <span>{{ character.birthdate }}</span>
+                </div>
+              }
+              
+              @if (character.children && character.children.length > 0) {
+                <div class="info-row">
+                  <strong>Children:</strong>
+                  <span>{{ character.children.join(', ') }}</span>
+                </div>
+              }
+              
+              <div class="click-hint">
+                <span>🔍 Click to search on Google</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+  }
+}

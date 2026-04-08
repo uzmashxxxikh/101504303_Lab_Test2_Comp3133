@@ -1,0 +1,18 @@
+<form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="search-form">
+  <input 
+    type="text" 
+    formControlName="name" 
+    placeholder="Search by character name" 
+    class="search-input"
+  />
+  
+  <select formControlName="house" class="house-select">
+    <option value="">All Houses</option>
+    <option value="Gryffindor">Gryffindor</option>
+    <option value="Slytherin">Slytherin</option>
+    <option value="Ravenclaw">Ravenclaw</option>
+    <option value="Hufflepuff">Hufflepuff</option>
+  </select>
+  
+  <button type="submit" class="filter-btn">Filter</button>
+</form>
