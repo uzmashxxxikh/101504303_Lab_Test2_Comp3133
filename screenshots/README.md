@@ -1,13 +1,3 @@
-# 📸 Screenshots Guide
-
-This folder contains all screenshots required for Lab Test 2 submission.
-
-## 📋 Screenshot Naming Convention
-
-Save your screenshots with these exact names in this folder:
-
----
-
 ## 🌐 Running Application Screenshots (Browser)
 
 ### `01-home-characters.png`
